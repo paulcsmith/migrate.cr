@@ -1,17 +1,10 @@
-require "db"
-require "pg"
-require "colorize"
+require "./init"
 
-raise "Requires a database name given as first option" if ARGV.first?.nil?
+Migrate::Task.run do
+  db_command = "CREATE DATABASE #{ARGV.first}"
+  puts "Creating database with: #{db_command.colorize(:cyan)}"
 
-DB_COMMAND = "CREATE DATABASE #{ARGV.first}"
-puts "Creating database with: #{DB_COMMAND.colorize(:cyan)}"
-
-begin
   DB.open("postgres://localhost") do |db|
-    db.exec DB_COMMAND
+    db.exec db_command
   end
-  puts "✅  Done".colorize(:green)
-rescue e : PQ::PQError
-  puts e.message.colorize(:red)
 end
