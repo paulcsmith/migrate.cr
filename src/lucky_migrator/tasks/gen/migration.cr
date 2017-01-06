@@ -35,6 +35,7 @@ class Gen::Migration < LuckyCli::Task
       puts "Migration name is required. Example: migrate.cr CreateUsers".colorize(:red)
     else
       LuckyMigrator::MigrationGenerator.new(name: ARGV.first).generate
+      puts "Created migration"
     end
   end
 end
